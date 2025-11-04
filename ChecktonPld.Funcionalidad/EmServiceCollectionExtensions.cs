@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ChecktonPld.DOM.ApplicationDbContext;
+using ChecktonPld.Funcionalidad.Functionality;
 using ChecktonPld.Funcionalidad.Helper;
 using ChecktonPld.Funcionalidad.ServiceClient;
 
@@ -86,11 +87,12 @@ namespace ChecktonPld.Funcionalidad
 		/// <param name="services"></param>
 		private static void ConfigureExternalConnectionServices(IServiceCollection services)
 		{
-			services.AddScoped<IGeneralConfigurationManagementFacade, GeneralConfigurationServiceFacade>();
+			services.AddScoped<IChecktonPLDAPIServicesFacade, ChecktonPLDAPIServicesFacade>();
 		}
 
 		private static void ConfigureFacadeServices(IServiceCollection services)
 		{
+			services.AddScoped<IValidacionCurpFacade, ValidacionCurpFacade>();
 		}
 	}
 }

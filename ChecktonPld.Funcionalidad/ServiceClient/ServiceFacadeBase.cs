@@ -36,6 +36,11 @@ namespace ChecktonPld.Funcionalidad.ServiceClient
                         .CreatePostmanServiceClientFacade(
                             baseUrl: baseUrl, version: version, postmanApiKey: authorization);
                     break;
+                case AuthorizationType.API_KEY when user == null && satellite == null:
+                    serviceClient = ServiceClient<T>
+                        .CreateApiKeyServiceClientFacade(
+                            baseUrl: baseUrl, apiKey: authorization);
+                    break;
                 case AuthorizationType.API_KEY when user != null && satellite != null:
                     serviceClient = ServiceClient<T>
                         .CreateApiKeyServiceClientFacade(

@@ -1,0 +1,1382 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Checkton PLD API Services",
+      "version": "1.0.0",
+      "description": "API Gateway para servicios de verificación de identidad con Appwrite",
+      "contact": {
+        "name": "API Support",
+        "email": "support@checkton.com"
+      },
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000",
+        "description": "Development server"
+      },
+      {
+        "url": "https://api-pld.checkton.com.mx",
+        "description": "Production server"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "ApiKeyAuth": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "X-API-Key",
+          "description": "API Key para autenticación"
+        },
+        "BearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "description": "Token de autenticación en formato Bearer"
+        }
+      },
+      "schemas": {
+        "Error": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean",
+              "example": false
+            },
+            "error": {
+              "type": "string",
+              "example": "Error message"
+            },
+            "message": {
+              "type": "string",
+              "example": "Detailed error description"
+            }
+          }
+        },
+        "Verification": {
+          "type": "object",
+          "description": "Objeto de verificación de identidad (sin metadatos internos de Appwrite)",
+          "properties": {
+            "$id": {
+              "type": "string",
+              "description": "ID único de la verificación",
+              "example": "68f7e89dc0cde6f0690a"
+            },
+            "$createdAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Fecha de creación (Appwrite)",
+              "example": "2025-10-21T20:10:05.790+00:00"
+            },
+            "$updatedAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Fecha de última actualización (Appwrite)",
+              "example": "2025-10-21T20:10:05.790+00:00"
+            },
+            "external_user_id": {
+              "type": "string",
+              "description": "ID del usuario en el sistema externo",
+              "example": "user123"
+            },
+            "external_reference": {
+              "type": "string",
+              "nullable": true,
+              "description": "Referencia externa opcional",
+              "example": "test_ref_001"
+            },
+            "company_id": {
+              "type": "string",
+              "description": "ID de la empresa",
+              "example": "68b1f69039696a3e40a4"
+            },
+            "name": {
+              "type": "string",
+              "nullable": true,
+              "description": "Nombre del usuario",
+              "example": "Juan"
+            },
+            "last_name": {
+              "type": "string",
+              "nullable": true,
+              "description": "Apellido paterno del usuario",
+              "example": "Pérez"
+            },
+            "mother_maiden_name": {
+              "type": "string",
+              "nullable": true,
+              "description": "Apellido materno del usuario",
+              "example": "García"
+            },
+            "user_data": {
+              "type": "string",
+              "nullable": true,
+              "description": "Datos adicionales del usuario en formato JSON string",
+              "example": "{\"email\":\"juan@example.com\",\"phone\":\"+52155512345\"}"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "in_progress",
+                "completed",
+                "failed",
+                "expired",
+                "cancelled"
+              ],
+              "description": "Estado de la verificación",
+              "example": "pending"
+            },
+            "result": {
+              "type": "string",
+              "enum": [
+                "approved",
+                "rejected",
+                "review_required",
+                "incomplete"
+              ],
+              "nullable": true,
+              "description": "Resultado de la verificación",
+              "example": null
+            },
+            "confidence_score": {
+              "type": "number",
+              "nullable": true,
+              "description": "Puntuación de confianza de la verificación (0-100)",
+              "example": null
+            },
+            "verification_url": {
+              "type": "string",
+              "description": "URL personalizada de Checkton para realizar la verificación",
+              "example": "https://verificacion-pld.checkton.com.mx/verificar/a0b6d919-cd28-410d-8dee-f563e9d0d323"
+            },
+            "is_active": {
+              "type": "boolean",
+              "description": "Indica si la verificación está activa",
+              "example": true
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Fecha de creación de la verificación",
+              "example": "2025-10-21T20:10:05.443+00:00"
+            },
+            "updated_at": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Fecha de última actualización",
+              "example": "2025-10-21T20:10:05.443+00:00"
+            },
+            "completed_at": {
+              "type": "string",
+              "format": "date-time",
+              "nullable": true,
+              "description": "Fecha de completado de la verificación",
+              "example": null
+            },
+            "expires_at": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Fecha de expiración (24 horas desde creación)",
+              "example": "2025-10-22T20:10:05.443+00:00"
+            }
+          }
+        },
+        "CreateVerificationRequest": {
+          "type": "object",
+          "required": [
+            "external_user_id"
+          ],
+          "properties": {
+            "external_user_id": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "ID del usuario en tu sistema",
+              "example": "user_12345"
+            },
+            "external_reference": {
+              "type": "string",
+              "maxLength": 200,
+              "description": "Referencia externa opcional",
+              "example": "order_67890"
+            },
+            "name": {
+              "type": "string",
+              "maxLength": 120,
+              "description": "Nombre del usuario",
+              "example": "Juan"
+            },
+            "last_name": {
+              "type": "string",
+              "maxLength": 120,
+              "description": "Apellido paterno",
+              "example": "Pérez"
+            },
+            "mother_maiden_name": {
+              "type": "string",
+              "maxLength": 120,
+              "description": "Apellido materno",
+              "example": "García"
+            },
+            "user_data": {
+              "type": "object",
+              "description": "Datos adicionales del usuario (JSON)",
+              "example": {
+                "email": "juan@example.com",
+                "phone": "+52123456789"
+              }
+            }
+          }
+        },
+        "Pagination": {
+          "type": "object",
+          "properties": {
+            "current_page": {
+              "type": "integer",
+              "example": 1
+            },
+            "total_pages": {
+              "type": "integer",
+              "example": 10
+            },
+            "total_items": {
+              "type": "integer",
+              "example": 250
+            },
+            "items_per_page": {
+              "type": "integer",
+              "example": 25
+            },
+            "items_on_page": {
+              "type": "integer",
+              "example": 25
+            },
+            "has_next_page": {
+              "type": "boolean",
+              "example": true
+            },
+            "has_prev_page": {
+              "type": "boolean",
+              "example": false
+            },
+            "next_page": {
+              "type": "integer",
+              "nullable": true,
+              "example": 2
+            },
+            "prev_page": {
+              "type": "integer",
+              "nullable": true,
+              "example": null
+            }
+          }
+        },
+        "ValidateCurpRequest": {
+          "type": "object",
+          "required": [
+            "curp"
+          ],
+          "properties": {
+            "curp": {
+              "type": "string",
+              "minLength": 18,
+              "maxLength": 18,
+              "pattern": "^[A-Z]{4}\\d{6}[HM][A-Z]{5}[A-Z0-9]\\d$",
+              "description": "CURP mexicana a validar (18 caracteres)",
+              "example": "LOMS550118MJCPDL06"
+            },
+            "external_user_id": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "ID del usuario en tu sistema (opcional)",
+              "example": "usuario_123"
+            }
+          }
+        },
+        "CurpValidation": {
+          "type": "object",
+          "description": "Documento de validación de CURP",
+          "properties": {
+            "$id": {
+              "type": "string",
+              "description": "ID único de la validación",
+              "example": "68ffc8160001778b8f51"
+            },
+            "$createdAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Fecha de creación",
+              "example": "2025-10-27T19:29:26.142+00:00"
+            },
+            "$updatedAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Fecha de última actualización",
+              "example": "2025-10-27T19:29:26.142+00:00"
+            },
+            "curp": {
+              "type": "string",
+              "description": "CURP validada",
+              "example": "LOMS550118MJCPDL06"
+            },
+            "company_id": {
+              "type": "string",
+              "description": "ID de la empresa",
+              "example": "67abc123def456"
+            },
+            "validation_type": {
+              "type": "string",
+              "description": "Tipo de validación",
+              "example": "simple"
+            },
+            "provider": {
+              "type": "string",
+              "description": "Proveedor de validación",
+              "example": "knesysplus"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "valid",
+                "invalid",
+                "error"
+              ],
+              "description": "Estado de la validación",
+              "example": "valid"
+            },
+            "message": {
+              "type": "string",
+              "description": "Mensaje de la validación",
+              "example": "CURP válida"
+            },
+            "external_user_id": {
+              "type": "string",
+              "nullable": true,
+              "description": "ID de usuario externo",
+              "example": "usuario_123"
+            }
+          }
+        },
+        "CurpOfficialData": {
+          "type": "object",
+          "description": "Datos oficiales de RENAPO",
+          "properties": {
+            "$id": {
+              "type": "string",
+              "description": "ID único del documento",
+              "example": "68ffc8170002889c9f62"
+            },
+            "$createdAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Fecha de creación",
+              "example": "2025-10-27T19:29:27.142+00:00"
+            },
+            "validation_id": {
+              "type": "string",
+              "description": "ID de la validación asociada",
+              "example": "68ffc8160001778b8f51"
+            },
+            "curp": {
+              "type": "string",
+              "description": "CURP",
+              "example": "LOMS550118MJCPDL06"
+            },
+            "nombre": {
+              "type": "string",
+              "description": "Nombre(s)",
+              "example": "SOLEDAD"
+            },
+            "primer_apellido": {
+              "type": "string",
+              "description": "Primer apellido",
+              "example": "LOPEZ"
+            },
+            "segundo_apellido": {
+              "type": "string",
+              "nullable": true,
+              "description": "Segundo apellido",
+              "example": "MADRIGAL"
+            },
+            "sexo": {
+              "type": "string",
+              "enum": [
+                "HOMBRE",
+                "MUJER"
+              ],
+              "description": "Sexo",
+              "example": "MUJER"
+            },
+            "fecha_nacimiento": {
+              "type": "string",
+              "description": "Fecha de nacimiento",
+              "example": "18/01/1955"
+            },
+            "nacionalidad": {
+              "type": "string",
+              "description": "Nacionalidad",
+              "example": "MEXICO"
+            },
+            "entidad_nacimiento": {
+              "type": "string",
+              "description": "Entidad de nacimiento",
+              "example": "JALISCO"
+            }
+          }
+        }
+      }
+    },
+    "security": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "paths": {
+      "/health": {
+        "get": {
+          "summary": "Health check",
+          "description": "Verifica que la API está funcionando correctamente",
+          "tags": [
+            "General"
+          ],
+          "security": [],
+          "responses": {
+            "200": {
+              "description": "API funcionando correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "ok"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "🚀 API Gateway funcionando correctamente!"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/renapo/list": {
+        "get": {
+          "summary": "Listar validaciones de CURP",
+          "description": "Obtiene todas las validaciones de CURP de la empresa con paginación y filtros opcionales",
+          "tags": [
+            "RENAPO"
+          ],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            },
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer",
+                "default": 1
+              },
+              "description": "Número de página"
+            },
+            {
+              "in": "query",
+              "name": "limit",
+              "schema": {
+                "type": "integer",
+                "default": 25,
+                "maximum": 100
+              },
+              "description": "Elementos por página"
+            },
+            {
+              "in": "query",
+              "name": "status",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "valid",
+                  "invalid",
+                  "error",
+                  "pending"
+                ]
+              },
+              "description": "Filtrar por estado"
+            },
+            {
+              "in": "query",
+              "name": "validation_type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "simple",
+                  "avanzada",
+                  "provider"
+                ]
+              },
+              "description": "Filtrar por tipo de validación"
+            },
+            {
+              "in": "query",
+              "name": "curp",
+              "schema": {
+                "type": "string"
+              },
+              "description": "Filtrar por CURP específica"
+            },
+            {
+              "in": "query",
+              "name": "external_user_id",
+              "schema": {
+                "type": "string"
+              },
+              "description": "Filtrar por ID de usuario externo"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de validaciones",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/CurpValidation"
+                        }
+                      },
+                      "pagination": {
+                        "$ref": "#/components/schemas/Pagination"
+                      },
+                      "filters_applied": {
+                        "type": "object"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Parámetros inválidos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "No autorizado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/renapo/validate": {
+        "post": {
+          "summary": "Validar CURP con RENAPO",
+          "description": "Valida una CURP mexicana consultando la base de datos oficial de RENAPO a través de KnesysPlus",
+          "tags": [
+            "RENAPO"
+          ],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            },
+            {
+              "BearerAuth": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateCurpRequest"
+                },
+                "examples": {
+                  "basic": {
+                    "summary": "Validación básica",
+                    "value": {
+                      "curp": "LOMS550118MJCPDL06"
+                    }
+                  },
+                  "with_user": {
+                    "summary": "Con ID de usuario",
+                    "value": {
+                      "curp": "LOMS550118MJCPDL06",
+                      "external_user_id": "usuario_123"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "CURP validada exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "validation_id": {
+                        "type": "string",
+                        "example": "68ffc8160001778b8f51"
+                      },
+                      "official_data_id": {
+                        "type": "string",
+                        "example": "68ffc8170002889c9f62"
+                      },
+                      "curp": {
+                        "type": "string",
+                        "example": "LOMS550118MJCPDL06"
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "valid",
+                          "invalid",
+                          "error"
+                        ],
+                        "example": "valid"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "CURP válida"
+                      },
+                      "provider": {
+                        "type": "string",
+                        "example": "knesysplus"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "nombre": {
+                            "type": "string",
+                            "example": "SOLEDAD"
+                          },
+                          "primer_apellido": {
+                            "type": "string",
+                            "example": "LOPEZ"
+                          },
+                          "segundo_apellido": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "MADRIGAL"
+                          },
+                          "sexo": {
+                            "type": "string",
+                            "enum": [
+                              "HOMBRE",
+                              "MUJER"
+                            ],
+                            "example": "MUJER"
+                          },
+                          "fecha_nacimiento": {
+                            "type": "string",
+                            "example": "18/01/1955"
+                          },
+                          "entidad_nacimiento": {
+                            "type": "string",
+                            "example": "JALISCO"
+                          },
+                          "nacionalidad": {
+                            "type": "string",
+                            "example": "MEXICO"
+                          }
+                        }
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Datos inválidos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Validation error"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "No autorizado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Permisos insuficientes",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/renapo/validation/{id}": {
+        "get": {
+          "summary": "Obtener resultado de validación de CURP",
+          "description": "Obtiene solo los campos de la validación (curp_validations)",
+          "tags": [
+            "RENAPO"
+          ],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            },
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID de la validación"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Resultado de la validación",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/CurpValidation"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "ID inválido",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "No autorizado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Validación no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/renapo/validation/{id}/detail": {
+        "get": {
+          "summary": "Obtener detalle completo de validación de CURP",
+          "description": "Obtiene la validación con los datos oficiales de RENAPO (curp_validations + curp_official_data)",
+          "tags": [
+            "RENAPO"
+          ],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            },
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID de la validación"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalle completo de la validación",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "validation": {
+                            "$ref": "#/components/schemas/CurpValidation"
+                          },
+                          "official_data": {
+                            "$ref": "#/components/schemas/CurpOfficialData"
+                          }
+                        }
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "ID inválido",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "No autorizado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Validación no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/verification/list": {
+        "get": {
+          "summary": "Listar y buscar verificaciones",
+          "description": "Obtiene todas las verificaciones de la empresa con paginación, filtros opcionales y búsqueda fulltext. Si se proporciona el parámetro 'q', realiza una búsqueda por texto en múltiples campos.",
+          "tags": [
+            "Verificaciones"
+          ],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            },
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "q",
+              "schema": {
+                "type": "string",
+                "minLength": 2
+              },
+              "description": "Término de búsqueda fulltext (mínimo 2 caracteres). Busca en nombre, apellidos, external_user_id, etc."
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer",
+                "default": 1
+              },
+              "description": "Número de página"
+            },
+            {
+              "in": "query",
+              "name": "limit",
+              "schema": {
+                "type": "integer",
+                "default": 25,
+                "maximum": 100
+              },
+              "description": "Elementos por página"
+            },
+            {
+              "in": "query",
+              "name": "status",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "in_progress",
+                  "completed",
+                  "failed",
+                  "expired",
+                  "cancelled"
+                ]
+              },
+              "description": "Filtrar por estado"
+            },
+            {
+              "in": "query",
+              "name": "result",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "approved",
+                  "rejected",
+                  "review_required",
+                  "incomplete"
+                ]
+              },
+              "description": "Filtrar por resultado"
+            },
+            {
+              "in": "query",
+              "name": "external_user_id",
+              "schema": {
+                "type": "string"
+              },
+              "description": "Filtrar por ID de usuario externo"
+            },
+            {
+              "in": "query",
+              "name": "is_active",
+              "schema": {
+                "type": "boolean"
+              },
+              "description": "Filtrar por estado activo"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de verificaciones o resultados de búsqueda",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Verification"
+                        }
+                      },
+                      "search_term": {
+                        "type": "string",
+                        "description": "Término de búsqueda usado (solo si se proporcionó 'q')"
+                      },
+                      "pagination": {
+                        "$ref": "#/components/schemas/Pagination"
+                      },
+                      "filters_applied": {
+                        "type": "object"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Parámetros inválidos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "No autorizado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Permisos insuficientes",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/verification/{id}": {
+        "get": {
+          "summary": "Obtener verificación por ID",
+          "description": "Obtiene los detalles de una verificación específica",
+          "tags": [
+            "Verificaciones"
+          ],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            },
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID de la verificación"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalles de la verificación",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Verification"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "ID inválido",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "No autorizado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Verificación no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/verification/create": {
+        "post": {
+          "summary": "Crear verificación",
+          "description": "Crea una nueva sesión de verificación de identidad",
+          "tags": [
+            "Verificaciones"
+          ],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            },
+            {
+              "BearerAuth": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateVerificationRequest"
+                },
+                "examples": {
+                  "basic": {
+                    "summary": "Verificación básica",
+                    "value": {
+                      "external_user_id": "user_12345"
+                    }
+                  },
+                  "complete": {
+                    "summary": "Verificación completa",
+                    "value": {
+                      "external_user_id": "user_12345",
+                      "external_reference": "order_67890",
+                      "name": "Juan",
+                      "last_name": "Pérez",
+                      "mother_maiden_name": "García",
+                      "user_data": {
+                        "email": "juan@example.com",
+                        "phone": "+52123456789"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Verificación creada exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean"
+                      },
+                      "session_id": {
+                        "type": "string"
+                      },
+                      "external_user_id": {
+                        "type": "string"
+                      },
+                      "verification_url": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "expires_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Datos inválidos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean"
+                      },
+                      "error": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "No autorizado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Permisos insuficientes",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tags": []
+}
+

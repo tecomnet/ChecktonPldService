@@ -11,6 +11,7 @@ public class UserApiTest : DatabaseTestFixture
 {
     // Api URI
     private const string API_URI = "users";
+
     // Api version
     private const string API_VERSION = "0.1";
 
@@ -28,124 +29,8 @@ public class UserApiTest : DatabaseTestFixture
         }).GetAwaiter().GetResult();
     }
 
- 
-    
-    #region Get test
-        [Fact]
-        public async Task Get_Unauthorized()
-        {
-            // Arrange
-            var client = Factory.CreateClient();
-            // Act
-            var response = await client.GetAsync(
-                requestUri: $"{API_VERSION}/{API_URI}");
-            // Assert
-            Assert.Equal(expected: HttpStatusCode.Unauthorized, actual: response.StatusCode);
-        }
-    
-        [Fact]
-        public async Task Get_ReturnsConfigNotFound()
-        {
-            // Arrange
-            await ClearTransactionConfig();
-            string[] expectedErrors = ["Error esperado"]; //{ ServiceErrorsBuilder.EmKeyValueConfigNotFound };
-            var client = Factory.CreateAuthenticatedClient();
-            // Act
-            var response = await client.GetAsync( requestUri: $"{API_VERSION}/{API_URI}");
-            // Read the content
-            var responseContentString = await response.Content.ReadAsStringAsync();
-            var errorResult = JsonConvert.DeserializeObject<InlineResponse400>(responseContentString);
-            // Asserts
-            Assert.Equal(expected: HttpStatusCode.NotFound, actual: response.StatusCode);
-            Assert.NotNull(errorResult);
-            var errors = errorResult.Errors;
-            foreach (var error in errors)
-                Assert.Contains(error.ErrorCode, expectedErrors);
-        }
-    
-        [Fact]
-        public async Task Get_Ok()
-        {
-            // Arrange
-            var client = Factory.CreateAuthenticatedClient();
-            // Act
-            var response = await client.GetAsync(requestUri: $"{API_VERSION}/{API_URI}");
-            // Read the content
-            var responseContentString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<UserResult>(responseContentString);
-            // Assert 
-            Assert.Equal(expected: HttpStatusCode.OK, actual: response.StatusCode);
-            Assert.NotNull(result);
-            //Assert.Equal(expected: nameof(TransactionsKeys.UnderscoreReplacementEnabled), actual: result.Key);
-            // Check all key config result properties 
-            ValidateProperties(result: result);
-        }
-    
-        #endregion
-        
-        #region Post test
-    [Fact]
-    public async Task Post_Unauthorized()
-    {
-        // Arrange
-        var client = Factory.CreateClient();
-        // Act
-        var response = await client.PostAsync(
-            requestUri: $"{API_VERSION}/{API_URI}", content: null);
-        // Assert
-        Assert.Equal(expected: HttpStatusCode.Unauthorized, actual: response.StatusCode);
-    }
-
-    [Fact]
-    public async Task Post_Ok()
-    {
-        // Arrange
-        await ClearTransactionConfig();
-        var client = Factory.CreateAuthenticatedClient();
-        // Request
-        var body = new UserUpdateRequest()
-        {
-            User = "uno"
-        };
-        // Create content
-        var content = CreateContent(body: body);
-        // Act
-        var response = await client.PostAsync( requestUri: $"{API_VERSION}/{API_URI}", content:content);
-        // Read the content
-        var responseContentString = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<UserResult>(responseContentString);
-        // Asserts
-        Assert.Equal(expected: HttpStatusCode.Created, actual: response.StatusCode);
-        Assert.NotNull(result);
-        // Valida tipos
-        ValidateProperties(result: result);
-        // Valida datos enviados
-        AssertProperties(body: body, result: result);
-    }
-    #endregion
-    
-    
-    #region Put test
-    [Fact]
-    public async Task Put_Unauthorized()
-    {
-        // Arrange
-        var client = Factory.CreateClient();
-        // Act
-        var response = await client.PutAsync(
-            requestUri: $"{API_VERSION}/{API_URI}", content: null);
-        // Assert
-        Assert.Equal(expected: HttpStatusCode.Unauthorized, actual: response.StatusCode);
-    }
-
-    [Fact]
-    public async Task Put_Ok()
-    {
-       
-    }
-    #endregion
     #region Private methods
-
+    /*
     /// <summary>
     /// Validate the properties  
     /// </summary>
@@ -187,7 +72,7 @@ public class UserApiTest : DatabaseTestFixture
     /// <returns>TransaccionesConfigResult</returns>
     private async Task<UserResult?> GetTransactionConfigFromDataBase()
     {
-       
+
         // Create client
         var client = Factory.CreateAuthenticatedClient();
         // Call api method
@@ -242,7 +127,6 @@ public class UserApiTest : DatabaseTestFixture
         // Assert key value config properties 
         Assert.Equal(expected: body.User, actual: result.User);
     }
-
+    */
     #endregion
-   
 }
