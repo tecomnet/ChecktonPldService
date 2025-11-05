@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChecktonPld.RestAPI.Controllers.Implementation;
 
 /// <inheritdoc />
-public class ChecktonPldApi(IValidacionCurpFacade facade, IMapper mapper): ChecktonPldApiControllerBase
+public class ChecktonPldApiController(IValidacionCurpFacade facade, IMapper mapper): ChecktonPldApiControllerBase
 {
     /// <inheritdoc />
     public override async Task<IActionResult> PostValidaConRenapo(string version, ValidacionCurpRequest body)

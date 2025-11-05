@@ -1,4 +1,6 @@
 using AutoMapper;
+using ChecktonPld.DOM.Modelos;
+using ChecktonPld.RestAPI.Models;
 
 namespace ChecktonPld.RestAPI.Mappers;
 
@@ -7,9 +9,11 @@ namespace ChecktonPld.RestAPI.Mappers;
 /// </summary>
 public class AutoMapperProfile : Profile
 {
+    /// <inheritdoc />
     public AutoMapperProfile()
     {
-        // Define el mapeo de Origen (Usuario) a Destino (UsuarioDto)
-        //CreateMap<Usuario, UsuarioDto>();
+        // Mapeo de validacion result
+        CreateMap<ValidacionCurp, ValidacionCurpResult>();
+
     }
 }

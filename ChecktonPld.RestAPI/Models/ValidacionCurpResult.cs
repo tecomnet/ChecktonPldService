@@ -23,13 +23,13 @@ namespace ChecktonPld.RestAPI.Models
     public partial class ValidacionCurpResult : IEquatable<ValidacionCurpResult>
     { 
         /// <summary>
-        /// Gets or Sets ValidacionId
+        /// Gets or Sets ValidationId
         /// </summary>
         [Required]
 
         [StringLength(100, MinimumLength=1)]
         [DataMember(Name="validacionId")]
-        public string ValidacionId { get; set; }
+        public string ValidationId { get; set; }
 
         /// <summary>
         /// Gets or Sets Success
@@ -47,7 +47,7 @@ namespace ChecktonPld.RestAPI.Models
         {
             var sb = new StringBuilder();
             sb.Append("class ValidacionCurpResult {\n");
-            sb.Append("  ValidacionId: ").Append(ValidacionId).Append("\n");
+            sb.Append("  ValidationId: ").Append(ValidationId).Append("\n");
             sb.Append("  Success: ").Append(Success).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -86,9 +86,9 @@ namespace ChecktonPld.RestAPI.Models
 
             return 
                 (
-                    ValidacionId == other.ValidacionId ||
-                    ValidacionId != null &&
-                    ValidacionId.Equals(other.ValidacionId)
+                    ValidationId == other.ValidationId ||
+                    ValidationId != null &&
+                    ValidationId.Equals(other.ValidationId)
                 ) && 
                 (
                     Success == other.Success ||
@@ -107,8 +107,8 @@ namespace ChecktonPld.RestAPI.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (ValidacionId != null)
-                    hashCode = hashCode * 59 + ValidacionId.GetHashCode();
+                    if (ValidationId != null)
+                    hashCode = hashCode * 59 + ValidationId.GetHashCode();
                     if (Success != null)
                     hashCode = hashCode * 59 + Success.GetHashCode();
                 return hashCode;

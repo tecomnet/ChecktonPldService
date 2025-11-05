@@ -122,6 +122,7 @@ public class ValidacionCurp : ValidatablePersistentObjectLogicalDelete
     /// <param name="testCase"></param>
     /// <param name="validationId"></param>
     /// <exception cref="EMGeneralAggregateException"></exception>
+
     public ValidacionCurp(
         string nombre,
         string primerApellido,
