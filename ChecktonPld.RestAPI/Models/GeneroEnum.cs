@@ -9,6 +9,7 @@
  */
 
 using System.Runtime.Serialization;
+using ChecktonPld.RestAPI.Helpers;
 using Newtonsoft.Json;
 
 namespace ChecktonPld.RestAPI.Models
@@ -18,7 +19,7 @@ namespace ChecktonPld.RestAPI.Models
           /// Estructura enum para genero
           /// </summary>
           /// <value>Estructura enum para genero</value>
-          [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+          [JsonConverter(typeof(CustomStringToEnumConverter<GeneroEnum>))] 
           public enum GeneroEnum
           {
               /// <summary>

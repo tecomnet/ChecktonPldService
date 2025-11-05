@@ -5,5 +5,6 @@ namespace ChecktonPld.Funcionalidad.Functionality;
 
 public interface IValidacionCurpFacade
 {
-    public Task<ValidacionCurp> ValidarChecktonPldAsync(string nombre, string primerApellido, string segundoApellido, DateTime fechaNacimiento, Genero genero, string estado, string nombreServicioCliente);
+    public Task<ValidacionCurp> ValidarCurpAsync(string nombre, string primerApellido, string segundoApellido, DateOnly fechaNacimiento, Genero genero, string estado, string nombreServicioCliente, Guid creationUser, string? testCase = null);
+    public Task<ValidacionCurp> ObtenerValidacionCurpAsync(string curp);
 }

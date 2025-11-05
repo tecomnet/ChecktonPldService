@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 using ChecktonPld.DOM.Comun;
 using ChecktonPld.DOM.Enums;
 using ChecktonPld.DOM.Errors;
@@ -48,7 +49,15 @@ public class ValidacionCurp : ValidatablePersistentObjectLogicalDelete
             propertyName: nameof(NombreServicioCliente),
             isRequired: true,
             minimumLength:1,
-            maximumLength: 100)
+            maximumLength: 100),
+        PropertyConstraint.StringPropertyConstraint(
+            propertyName: nameof(ValidationId),
+            isRequired: true,
+            minimumLength:1,
+            maximumLength: 100),
+        PropertyConstraint.ObjectPropertyConstraint(
+            propertyName: nameof(Success),
+            isRequired: true),
     ];
 
 
@@ -85,6 +94,11 @@ public class ValidacionCurp : ValidatablePersistentObjectLogicalDelete
     [Required]
     [MaxLength(100)]
     public string NombreServicioCliente { get; private set; }
+    [Required]
+    [MaxLength(100)]
+    public string ValidationId { get; private set; }
+    [Required]
+    public bool Success { get; private set; }
 
     public ValidacionCurp() : base()
     {
@@ -103,8 +117,10 @@ public class ValidacionCurp : ValidatablePersistentObjectLogicalDelete
     /// <param name="curpGenerada"></param>
     /// <param name="tipoCheckton"></param>
     /// <param name="nombreServicioCliente"></param>
+    /// <param name="success"></param>
     /// <param name="creationUser"></param>
     /// <param name="testCase"></param>
+    /// <param name="validationId"></param>
     /// <exception cref="EMGeneralAggregateException"></exception>
     public ValidacionCurp(
         string nombre,
@@ -116,6 +132,8 @@ public class ValidacionCurp : ValidatablePersistentObjectLogicalDelete
         string curpGenerada,
         TipoCheckton tipoCheckton,
         string nombreServicioCliente,
+        string validationId,
+        bool success,
         Guid creationUser,
         string? testCase = null) : base(creationUser, testCase)
     {
@@ -131,6 +149,8 @@ public class ValidacionCurp : ValidatablePersistentObjectLogicalDelete
         IsPropertyValid(propertyName: nameof(CurpGenerada), value: curpGenerada, exceptions: ref exceptions);
         IsPropertyValid(propertyName: nameof(TipoCheckton), value: tipoCheckton, exceptions: ref exceptions);
         IsPropertyValid(propertyName: nameof(NombreServicioCliente), value: nombreServicioCliente, exceptions: ref exceptions);
+        IsPropertyValid(propertyName: nameof(ValidationId), value: validationId, exceptions: ref exceptions);
+        IsPropertyValid(propertyName: nameof(Success), value: success, exceptions: ref exceptions);
         // If there are exceptions, throw them
         if (exceptions.Count > 0) throw new EMGeneralAggregateException(exceptions: exceptions);
         // Seteo de propiedades
@@ -143,6 +163,8 @@ public class ValidacionCurp : ValidatablePersistentObjectLogicalDelete
         this.CurpGenerada = curpGenerada;
         this.TipoCheckton = tipoCheckton;
         this.NombreServicioCliente = nombreServicioCliente;
+        this.ValidationId = validationId;
+        this.Success = success;
     }
 
     

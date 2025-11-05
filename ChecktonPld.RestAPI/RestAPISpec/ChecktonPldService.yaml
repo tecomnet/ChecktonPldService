@@ -130,8 +130,8 @@ components:
         - genero
         - estado
         - nombreServicioCliente
-    CurpValidacionResult:
-      title: CurpValidacionResult
+    ValidacionCurpResult:
+      title: ValidacionCurpResult
       x-stoplight:
         id: yogip2dhjitkj
       type: object
@@ -147,23 +147,9 @@ components:
           type: boolean
           x-stoplight:
             id: 3gqw0gpaee1h1
-        message:
-          type: string
-          x-stoplight:
-            id: 3gqw0gpaee1h1
-          minLength: 1
-          maxLength: 250
-        status:
-          type: string
-          x-stoplight:
-            id: 3gqw0gpaee1h1
-          minLength: 1
-          maxLength: 50
       required:
         - validacionId
         - success
-        - message
-        - status
     GeneroEnum:
       title: GeneroEnum
       x-stoplight:

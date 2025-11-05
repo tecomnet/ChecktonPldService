@@ -20,7 +20,7 @@ namespace ChecktonPld.RestAPI.Models
     /// Estructura del resultado de la validacion de datos personales en checkton pld
     /// </summary>
     [DataContract]
-    public partial class CurpValidacionResult : IEquatable<CurpValidacionResult>
+    public partial class ValidacionCurpResult : IEquatable<ValidacionCurpResult>
     { 
         /// <summary>
         /// Gets or Sets ValidacionId
@@ -40,35 +40,15 @@ namespace ChecktonPld.RestAPI.Models
         public bool? Success { get; set; }
 
         /// <summary>
-        /// Gets or Sets Message
-        /// </summary>
-        [Required]
-
-        [StringLength(250, MinimumLength=1)]
-        [DataMember(Name="message")]
-        public string Message { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Status
-        /// </summary>
-        [Required]
-
-        [StringLength(50, MinimumLength=1)]
-        [DataMember(Name="status")]
-        public string Status { get; set; }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CurpValidacionResult {\n");
+            sb.Append("class ValidacionCurpResult {\n");
             sb.Append("  ValidacionId: ").Append(ValidacionId).Append("\n");
             sb.Append("  Success: ").Append(Success).Append("\n");
-            sb.Append("  Message: ").Append(Message).Append("\n");
-            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -91,15 +71,15 @@ namespace ChecktonPld.RestAPI.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((CurpValidacionResult)obj);
+            return obj.GetType() == GetType() && Equals((ValidacionCurpResult)obj);
         }
 
         /// <summary>
-        /// Returns true if CurpValidacionResult instances are equal
+        /// Returns true if ValidacionCurpResult instances are equal
         /// </summary>
-        /// <param name="other">Instance of CurpValidacionResult to be compared</param>
+        /// <param name="other">Instance of ValidacionCurpResult to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CurpValidacionResult other)
+        public bool Equals(ValidacionCurpResult other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -114,16 +94,6 @@ namespace ChecktonPld.RestAPI.Models
                     Success == other.Success ||
                     Success != null &&
                     Success.Equals(other.Success)
-                ) && 
-                (
-                    Message == other.Message ||
-                    Message != null &&
-                    Message.Equals(other.Message)
-                ) && 
-                (
-                    Status == other.Status ||
-                    Status != null &&
-                    Status.Equals(other.Status)
                 );
         }
 
@@ -141,10 +111,6 @@ namespace ChecktonPld.RestAPI.Models
                     hashCode = hashCode * 59 + ValidacionId.GetHashCode();
                     if (Success != null)
                     hashCode = hashCode * 59 + Success.GetHashCode();
-                    if (Message != null)
-                    hashCode = hashCode * 59 + Message.GetHashCode();
-                    if (Status != null)
-                    hashCode = hashCode * 59 + Status.GetHashCode();
                 return hashCode;
             }
         }
@@ -152,12 +118,12 @@ namespace ChecktonPld.RestAPI.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(CurpValidacionResult left, CurpValidacionResult right)
+        public static bool operator ==(ValidacionCurpResult left, ValidacionCurpResult right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(CurpValidacionResult left, CurpValidacionResult right)
+        public static bool operator !=(ValidacionCurpResult left, ValidacionCurpResult right)
         {
             return !Equals(left, right);
         }
