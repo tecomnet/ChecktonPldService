@@ -15,14 +15,17 @@ public class ValidacionCurpFacadeTest(SetupDataConfig setupConfig)
     [InlineData("1. Successfully case, valid CURP generation and validation",
         "Enrique", "Escandon", "Cruz", "1989-04-30", Genero.Masculino, "Distrito Federal",
         "Servicio Cliente Test", true, new string[] { })]
-
+    [InlineData("1.1. Successfully case, valid CURP generation and validation",
+        "Edilberto", "Martinez", "Diaz", "1991-01-14", Genero.Masculino, "Campeche",
+        "WalletService", true, new string[] { })]
+    // CASOS DE ERROR
     [InlineData("2. Successfully case, female gender and different state",
         "María", "García", "López", "1985-12-25", Genero.Femenino, "Jalisco",
-        "Servicio Cliente Web", false, new string[] { "CHECKTON-PLD-API-SERVICES-ERROR "})]
+        "Servicio Cliente Web", false, new string[] { "CHECKTON-PLD-API-SERVICES-ERROR"})]
 
-    [InlineData("3. Successfully case, minimum length names",
+    [InlineData("3. Successfully case, estado invalido",
         "Ana", "L", "M", "2000-01-01", Genero.Femenino, "NL",
-        "S", false, new string[] { "CHECKTON-PLD-API-SERVICES-ERROR " })]
+        "S", false, new string[] { ServiceErrorsBuilder.NombreEstadoInvalido })]
 
     public async Task ValidarCurpAsyncTest(
         string caseName,

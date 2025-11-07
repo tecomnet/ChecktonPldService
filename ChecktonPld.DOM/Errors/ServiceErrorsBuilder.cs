@@ -11,6 +11,8 @@ public class ServiceErrorsBuilder
     {
         // 1. Carga inicial de todos los catálogos de errores
         GeneralErrors();
+        // 2. Carga de errores de validacion de curp
+        CurpErrors();
     }
 
     // Método privado para añadir un error al diccionario

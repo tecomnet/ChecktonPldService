@@ -37,7 +37,7 @@ public static class EstadoMapper
 
         // Si la conversión falla, se lanza una excepción indicando que el nombre no es válido.
         throw new EMGeneralAggregateException(DomCommon.BuildEmGeneralException(
-            errorCode: ServiceErrorsBuilder.NombreEstadoRequerido,
+            errorCode: ServiceErrorsBuilder.NombreEstadoInvalido,
             dynamicContent: [estadoNombre],
             module: "EstadoMapper"));
     }
