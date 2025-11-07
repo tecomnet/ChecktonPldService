@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ChecktonPld.DOM.Errors;
+﻿using ChecktonPld.DOM.Errors;
 using ChecktonPld.Funcionalidad.Helper;
 using ChecktonPld.Funcionalidad.Remoting.REST.ChecktonPldManagement;
 

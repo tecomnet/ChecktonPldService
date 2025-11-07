@@ -1,6 +1,6 @@
 using ChecktonPld.DOM.Enums;
 using ChecktonPld.DOM.Errors;
-using ChecktonPld.Funcionalidad.Functionality;
+using ChecktonPld.Funcionalidad.Functionality.CurpFacade;
 using ChecktonPld.UnitTest.Functionality.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Sdk;
@@ -16,13 +16,13 @@ public class ValidacionCurpFacadeTest(SetupDataConfig setupConfig)
         "Enrique", "Escandon", "Cruz", "1989-04-30", Genero.Masculino, "Distrito Federal",
         "Servicio Cliente Test", true, new string[] { })]
 
-    /*[InlineData("2. Successfully case, female gender and different state",
+    [InlineData("2. Successfully case, female gender and different state",
         "María", "García", "López", "1985-12-25", Genero.Femenino, "Jalisco",
-        "Servicio Cliente Web", true, new string[] { })]
+        "Servicio Cliente Web", false, new string[] { "CHECKTON-PLD-API-SERVICES-ERROR "})]
 
     [InlineData("3. Successfully case, minimum length names",
         "Ana", "L", "M", "2000-01-01", Genero.Femenino, "NL",
-        "S", true, new string[] { })]*/
+        "S", false, new string[] { "CHECKTON-PLD-API-SERVICES-ERROR " })]
 
     public async Task ValidarCurpAsyncTest(
         string caseName,

@@ -14,6 +14,5 @@ public class AutoMapperProfile : Profile
     {
         // Mapeo de validacion result
         CreateMap<ValidacionCurp, ValidacionCurpResult>();
-
     }
 }

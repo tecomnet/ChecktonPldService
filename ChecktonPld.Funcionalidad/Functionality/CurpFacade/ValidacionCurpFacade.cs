@@ -4,10 +4,9 @@ using ChecktonPld.DOM.Enums;
 using ChecktonPld.DOM.Errors;
 using ChecktonPld.DOM.Modelos;
 using ChecktonPld.Funcionalidad.GeneradorCurp;
-using ChecktonPld.Funcionalidad.Helper;
 using ChecktonPld.Funcionalidad.ServiceClient;
 
-namespace ChecktonPld.Funcionalidad.Functionality;
+namespace ChecktonPld.Funcionalidad.Functionality.CurpFacade;
 
 public class ValidacionCurpFacade(ServiceDbContext context, IChecktonPLDAPIServicesFacade checktonPldApiServicesFacade) : IValidacionCurpFacade
 {

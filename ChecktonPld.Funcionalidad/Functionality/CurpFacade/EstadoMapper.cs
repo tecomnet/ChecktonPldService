@@ -1,6 +1,8 @@
+using ChecktonPld.DOM;
+using ChecktonPld.DOM.Errors;
 using ChecktonPld.Funcionalidad.GeneradorCurp.Enums;
 
-namespace ChecktonPld.Funcionalidad.Functionality;
+namespace ChecktonPld.Funcionalidad.Functionality.CurpFacade;
 
 // Clase para mapear un string al enum Estado
 public static class EstadoMapper
@@ -15,7 +17,10 @@ public static class EstadoMapper
     {
         if (string.IsNullOrWhiteSpace(estadoNombre))
         {
-            throw new ArgumentException("El nombre del estado no puede ser nulo o vacío.", nameof(estadoNombre));
+            throw new EMGeneralAggregateException(DomCommon.BuildEmGeneralException(
+                errorCode: ServiceErrorsBuilder.NombreEstadoRequerido,
+                dynamicContent: [],
+                module: "EstadoMapper"));
         }
 
         // 1. Normalización: Reemplazar espacios por guiones bajos para que coincida con el enum.
@@ -31,6 +36,9 @@ public static class EstadoMapper
         }
 
         // Si la conversión falla, se lanza una excepción indicando que el nombre no es válido.
-        throw new ArgumentException($"El nombre de estado '{estadoNombre}' no es un valor válido para el enum Estado.", nameof(estadoNombre));
+        throw new EMGeneralAggregateException(DomCommon.BuildEmGeneralException(
+            errorCode: ServiceErrorsBuilder.NombreEstadoRequerido,
+            dynamicContent: [estadoNombre],
+            module: "EstadoMapper"));
     }
 }

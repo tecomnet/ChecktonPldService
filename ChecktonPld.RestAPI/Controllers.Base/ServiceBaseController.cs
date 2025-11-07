@@ -6,9 +6,6 @@ using System;
 using Newtonsoft.Json;
 using Serilog;
 using ChecktonPld.DOM.Errors;
-using ChecktonPld.RestAPI.Models;
-using InlineResponse400 = ChecktonPld.RestAPI.Models.InlineResponse400;
-using InlineResponse400Errors = ChecktonPld.RestAPI.Models.InlineResponse400Errors;
 using Models_InlineResponse400 = ChecktonPld.RestAPI.Models.InlineResponse400;
 using Models_InlineResponse400Errors = ChecktonPld.RestAPI.Models.InlineResponse400Errors;
 

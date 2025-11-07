@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using ChecktonPld.DOM.Enums;
-using ChecktonPld.Funcionalidad.Functionality;
+using ChecktonPld.Funcionalidad.Functionality.CurpFacade;
 using ChecktonPld.RestAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 

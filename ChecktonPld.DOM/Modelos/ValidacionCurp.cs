@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Numerics;
 using ChecktonPld.DOM.Comun;
 using ChecktonPld.DOM.Enums;
 using ChecktonPld.DOM.Errors;

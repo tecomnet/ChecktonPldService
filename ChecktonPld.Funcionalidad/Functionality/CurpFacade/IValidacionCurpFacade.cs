@@ -1,7 +1,7 @@
 using ChecktonPld.DOM.Enums;
 using ChecktonPld.DOM.Modelos;
 
-namespace ChecktonPld.Funcionalidad.Functionality;
+namespace ChecktonPld.Funcionalidad.Functionality.CurpFacade;
 
 public interface IValidacionCurpFacade
 {

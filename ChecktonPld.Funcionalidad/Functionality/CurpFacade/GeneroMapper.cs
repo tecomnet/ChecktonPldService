@@ -1,7 +1,7 @@
 using ChecktonPld.DOM.Enums;
 using ChecktonPld.Funcionalidad.GeneradorCurp.Enums;
 
-namespace ChecktonPld.Funcionalidad.Functionality;
+namespace ChecktonPld.Funcionalidad.Functionality.CurpFacade;
 
 // Función de mapeo (Ejemplo)
 public static class GeneroMapper

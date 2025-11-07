@@ -150,7 +150,7 @@ namespace ChecktonPld.Funcionalidad.GeneradorCurp
 
                 if (index == -1)
                 {
-                    throw new ArgumentException($"Carácter inválido en la compisición de la pre CURP. [{caracter}]");
+                    throw new ArgumentException($"Carácter inválido en la composición de la pre CURP. [{caracter}]");
                 }
 
                 var valor = index * contador;
