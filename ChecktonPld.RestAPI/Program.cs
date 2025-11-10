@@ -15,6 +15,9 @@ using ChecktonPld.RestAPI.Errors;
 using ChecktonPld.RestAPI.Filters;
 using ChecktonPld.RestAPI.Helpers;
 using ChecktonPld.RestAPI.Mappers;
+using ChecktonPld.RestAPI.Security;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChecktonPld.RestAPI
 {
@@ -41,7 +44,20 @@ namespace ChecktonPld.RestAPI
 			{
 				cfg.AddProfile<AutoMapperProfile>();
 			});
-			
+				builder.Services.AddAuthentication() // sin esquema por defecto
+				.AddScheme<AuthenticationSchemeOptions, BearerAuthenticationHandler>(
+					BearerAuthenticationHandler.SchemeName, null)
+				.AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(
+					ApiKeyAuthenticationHandler.SchemeName, null);
+			builder.Services.AddAuthorization(options =>
+			{
+				// Se acepta autenticación si **cualquiera** de los handlers autentica con éxito
+				options.DefaultPolicy = new AuthorizationPolicyBuilder(
+						BearerAuthenticationHandler.SchemeName,
+						ApiKeyAuthenticationHandler.SchemeName)
+					.RequireAuthenticatedUser()
+					.Build();
+			});
 			builder.Services.AddEmServices(builder.Configuration);
 			AddApiVersioning(builder.Services);
 
