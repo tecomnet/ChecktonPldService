@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using ChecktonPld.RestAPI.Attributes;
 using ChecktonPld.RestAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChecktonPld.RestAPI.Controllers
 { 
@@ -21,6 +22,7 @@ namespace ChecktonPld.RestAPI.Controllers
     /// 
     /// </summary>
     [ApiController]
+    [Authorize]
     public abstract class ChecktonPldApiControllerBase : ControllerBase
     {
         /// <summary>

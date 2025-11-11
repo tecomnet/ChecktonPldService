@@ -58,7 +58,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CurpValidacionResult'
+                $ref: '#/components/schemas/ValidacionCurpResult'
         '400':
           $ref: '#/components/responses/HTTP_Error_400'
         '401':
