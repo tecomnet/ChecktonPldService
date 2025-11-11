@@ -28,8 +28,17 @@ namespace ChecktonPld.RestAPI.Models
         [Required]
 
         [StringLength(100, MinimumLength=1)]
-        [DataMember(Name="validacionId")]
+        [DataMember(Name="validationId")]
         public string ValidationId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets CurpGenerada
+        /// </summary>
+        [Required]
+
+        [StringLength(18, MinimumLength=18)]
+        [DataMember(Name="curpGenerada")]
+        public string CurpGenerada { get; set; }
 
         /// <summary>
         /// Gets or Sets Success
@@ -48,6 +57,7 @@ namespace ChecktonPld.RestAPI.Models
             var sb = new StringBuilder();
             sb.Append("class ValidacionCurpResult {\n");
             sb.Append("  ValidationId: ").Append(ValidationId).Append("\n");
+            sb.Append("  CurpGenerada: ").Append(CurpGenerada).Append("\n");
             sb.Append("  Success: ").Append(Success).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -91,6 +101,11 @@ namespace ChecktonPld.RestAPI.Models
                     ValidationId.Equals(other.ValidationId)
                 ) && 
                 (
+                    CurpGenerada == other.CurpGenerada ||
+                    CurpGenerada != null &&
+                    CurpGenerada.Equals(other.CurpGenerada)
+                ) && 
+                (
                     Success == other.Success ||
                     Success != null &&
                     Success.Equals(other.Success)
@@ -109,6 +124,8 @@ namespace ChecktonPld.RestAPI.Models
                 // Suitable nullity checks etc, of course :)
                     if (ValidationId != null)
                     hashCode = hashCode * 59 + ValidationId.GetHashCode();
+                    if (CurpGenerada != null)
+                    hashCode = hashCode * 59 + CurpGenerada.GetHashCode();
                     if (Success != null)
                     hashCode = hashCode * 59 + Success.GetHashCode();
                 return hashCode;

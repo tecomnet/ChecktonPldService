@@ -42,13 +42,7 @@ paths:
       security: []
   '/{version}/checktonpld':
     parameters:
-      - name: version
-        in: path
-        required: true
-        schema:
-          type: string
-          pattern: '^(?<major>[0-9]+).(?<minor>[0-9]+)$'
-        description: Version of the API to use
+      - $ref: '#/components/parameters/version'
     post:
       summary: Valida datos personales con checkton pld
       operationId: PostValidaConRenapo
@@ -143,12 +137,19 @@ components:
             id: cmh7pv6rstqw2
           minLength: 1
           maxLength: 100
+        curpGenerada:
+          type: string
+          x-stoplight:
+            id: cmh7pv6rstqw2
+          minLength: 18
+          maxLength: 18
         success:
           type: boolean
           x-stoplight:
             id: 3gqw0gpaee1h1
       required:
         - validationId
+        - curpGenerada
         - success
     GeneroEnum:
       title: GeneroEnum
