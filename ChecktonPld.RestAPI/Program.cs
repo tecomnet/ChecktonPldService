@@ -151,7 +151,7 @@ namespace ChecktonPld.RestAPI
 				foreach (var description in provider.ApiVersionDescriptions)
 				{
 					// TODO Change the name parameter with information of this service
-					c.SwaggerEndpoint($"/MicroServicios/TwilioService/swagger/{description.GroupName}/swagger.json"
+					c.SwaggerEndpoint($"/MicroServicios/ChecktonPldService/swagger/{description.GroupName}/swagger.json"
 						, "ChecktonPldService " + description.ApiVersion);
 				}
 			});
