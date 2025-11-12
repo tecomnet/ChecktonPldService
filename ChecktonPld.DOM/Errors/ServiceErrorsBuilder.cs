@@ -13,6 +13,8 @@ public class ServiceErrorsBuilder
         GeneralErrors();
         // 2. Carga de errores de validacion de curp
         CurpErrors();
+        // 3. Carga de errores de autenticacion
+        AuthenticationErrors();
     }
 
     // Método privado para añadir un error al diccionario
@@ -68,5 +70,19 @@ public class ServiceErrorsBuilder
             description: "El nombre del estado no es válido.");
     }
    
+    #endregion
+    
+    #region Autentication errors
+
+    public const string EmClaimUserError = "EM-CLAIM-USER-ERROR";
+    private void AuthenticationErrors()
+    {
+        // Error de autenticación
+        AddServiceError(
+            errorCode: EmClaimUserError,
+            message: "Error de autenticación",
+            description: "El user de autenticación no es válido o no fue encontrado");
+    }
+		
     #endregion
 }

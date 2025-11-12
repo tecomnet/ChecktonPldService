@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ChecktonPld.DOM.Enums;
 using ChecktonPld.Funcionalidad.Functionality.CurpFacade;
+using ChecktonPld.RestAPI.Helpers;
 using ChecktonPld.RestAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ public class ChecktonPldApiController(IValidacionCurpFacade facade, IMapper mapp
             genero: (Genero)body.Genero,
             estado: body.Estado,
             nombreServicioCliente: body.NombreServicioCliente,
-            creationUser: Guid.Empty
+            creationUser: this.GetAuthenticatedUserGuid()
         );
         // Mapeo a result
         var result = mapper.Map<ValidacionCurpResult>(validacion);

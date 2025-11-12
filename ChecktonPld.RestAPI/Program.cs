@@ -101,6 +101,8 @@ namespace ChecktonPld.RestAPI
 						.SystemTextJsonOutputFormatter>();
 					// Adds ObsoleteMethodFilter
 					options.Filters.Add<ObsoleteMethodFilter>();
+					// AÑADIDO: Agrega el filtro global para el manejo de excepciones de negocio/sistema.
+					options.Filters.Add<ServiceExceptionFilter>();
 				})
 				.AddNewtonsoftJson(opts =>
 				{
@@ -136,7 +138,7 @@ namespace ChecktonPld.RestAPI
 						new() {
 							// You can set the Url from the default http request data or by hard coding it
 							// Url = $"{httpReq.Scheme}://{httpReq.Host.Value}",
-							Url = $"https://{httpReq.Host.Value}/api/checktonpldservice",
+							Url = $"https://{httpReq.Host.Value}/MicroServicios/ChecktonPldService",
 							Description = "Deployed Tecom Net"
 						}
 					];
@@ -149,7 +151,7 @@ namespace ChecktonPld.RestAPI
 				foreach (var description in provider.ApiVersionDescriptions)
 				{
 					// TODO Change the name parameter with information of this service
-					c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json"
+					c.SwaggerEndpoint($"/MicroServicios/TwilioService/swagger/{description.GroupName}/swagger.json"
 						, "ChecktonPldService " + description.ApiVersion);
 				}
 			});
