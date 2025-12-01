@@ -28,7 +28,8 @@ namespace ChecktonPld.Funcionalidad.GeneradorCurp.Enums
 
         Chihuahua = 8,
 
-        Distrito_Federal = 9,
+        //Distrito_Federal = 9,
+        Ciudad_De_Mexico = 9,
 
         Durango = 10,
 
@@ -40,7 +41,7 @@ namespace ChecktonPld.Funcionalidad.GeneradorCurp.Enums
 
         Jalisco = 14,
 
-        Mexico = 15,
+        Estado_De_Mexico = 15,
 
         Michoacan = 16,
 
