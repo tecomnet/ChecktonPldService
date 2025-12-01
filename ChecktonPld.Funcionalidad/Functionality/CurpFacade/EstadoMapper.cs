@@ -29,6 +29,9 @@ public static class EstadoMapper
             .Replace(" ", "_")
             .Replace("-", "_");
         
+        // 2. Remover acentos
+        normalizedName = normalizedName.RemoveAccentMarks();
+        
         // La comparación se hace ignorando mayúsculas/minúsculas (ignoreCase: true)
         if (Enum.TryParse(normalizedName, ignoreCase: true, out Estado result))
         {
