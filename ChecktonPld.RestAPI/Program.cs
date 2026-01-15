@@ -15,6 +15,9 @@ using ChecktonPld.RestAPI.Errors;
 using ChecktonPld.RestAPI.Filters;
 using ChecktonPld.RestAPI.Helpers;
 using ChecktonPld.RestAPI.Mappers;
+using ChecktonPld.RestAPI.Security;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChecktonPld.RestAPI
 {
@@ -41,7 +44,20 @@ namespace ChecktonPld.RestAPI
 			{
 				cfg.AddProfile<AutoMapperProfile>();
 			});
-			
+				builder.Services.AddAuthentication() // sin esquema por defecto
+				.AddScheme<AuthenticationSchemeOptions, BearerAuthenticationHandler>(
+					BearerAuthenticationHandler.SchemeName, null)
+				.AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(
+					ApiKeyAuthenticationHandler.SchemeName, null);
+			builder.Services.AddAuthorization(options =>
+			{
+				// Se acepta autenticación si **cualquiera** de los handlers autentica con éxito
+				options.DefaultPolicy = new AuthorizationPolicyBuilder(
+						BearerAuthenticationHandler.SchemeName,
+						ApiKeyAuthenticationHandler.SchemeName)
+					.RequireAuthenticatedUser()
+					.Build();
+			});
 			builder.Services.AddEmServices(builder.Configuration);
 			AddApiVersioning(builder.Services);
 
@@ -85,6 +101,8 @@ namespace ChecktonPld.RestAPI
 						.SystemTextJsonOutputFormatter>();
 					// Adds ObsoleteMethodFilter
 					options.Filters.Add<ObsoleteMethodFilter>();
+					// AÑADIDO: Agrega el filtro global para el manejo de excepciones de negocio/sistema.
+					options.Filters.Add<ServiceExceptionFilter>();
 				})
 				.AddNewtonsoftJson(opts =>
 				{
@@ -120,7 +138,7 @@ namespace ChecktonPld.RestAPI
 						new() {
 							// You can set the Url from the default http request data or by hard coding it
 							// Url = $"{httpReq.Scheme}://{httpReq.Host.Value}",
-							Url = $"https://{httpReq.Host.Value}/api/checktonpldservice",
+							Url = $"https://{httpReq.Host.Value}/MicroServicios/ChecktonPldService",
 							Description = "Deployed Tecom Net"
 						}
 					];
@@ -133,7 +151,7 @@ namespace ChecktonPld.RestAPI
 				foreach (var description in provider.ApiVersionDescriptions)
 				{
 					// TODO Change the name parameter with information of this service
-					c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json"
+					c.SwaggerEndpoint($"/MicroServicios/ChecktonPldService/swagger/{description.GroupName}/swagger.json"
 						, "ChecktonPldService " + description.ApiVersion);
 				}
 			});

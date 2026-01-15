@@ -40,172 +40,127 @@ paths:
       operationId: GetReady
       description: Readiness check for the service
       security: []
-  '/{version}/users':
+  '/{version}/checktonpld':
     parameters:
       - $ref: '#/components/parameters/version'
-    get:
-      summary: Obtiene el usuario
-      tags:
-        - Users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResult'
-        '400':
-          $ref: '#/components/responses/HTTP_Error_400'
-        '401':
-          $ref: '#/components/responses/HTTP_Error_400'
-        '404':
-          $ref: '#/components/responses/HTTP_Error_400'
-      operationId: GetUser
-      description: Obtiene el usuario
-      security:
-        - jwsToken: []
     post:
-      summary: Crea un usuario
-      operationId: PostUser
+      summary: Valida datos personales con checkton pld
+      operationId: PostValidaConRenapo
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResult'
+                $ref: '#/components/schemas/ValidacionCurpResult'
         '400':
           $ref: '#/components/responses/HTTP_Error_400'
         '401':
           $ref: '#/components/responses/HTTP_Error_400'
-      tags:
-        - Users
-      description: Crea un usuario
+      description: Valida un cliente con renapo usando api de checkton pld
       security:
         - jwsToken: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRequest'
+              $ref: '#/components/schemas/ValidacionCurpRequest'
         description: ''
-    put:
-      summary: Actualiza un usuario
-      operationId: PutUser
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResult'
-        '400':
-          $ref: '#/components/responses/HTTP_Error_400'
-        '401':
-          $ref: '#/components/responses/HTTP_Error_400'
-        '404':
-          $ref: '#/components/responses/HTTP_Error_400'
       tags:
-        - Users
-      description: Actualiza un usuario
-      security:
-        - jwsToken: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserUpdateRequest'
-    delete:
-      summary: Elimina un usuario
-      operationId: DeleteUser
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResult'
-        '400':
-          $ref: '#/components/responses/HTTP_Error_400'
-        '401':
-          $ref: '#/components/responses/HTTP_Error_400'
-        '404':
-          $ref: '#/components/responses/HTTP_Error_400'
-      tags:
-        - Users
-      description: Elimina un usuario
-      security:
-        - jwsToken: []
+        - checktonPld
 components:
   schemas:
-    UserRequest:
-      title: UserRequest
+    ValidacionCurpRequest:
+      title: ValidacionCurpRequest
       x-stoplight:
-        id: 1a399a20dcefe
+        id: ftnocc7wbt65m
       type: object
-      description: Estructura para agregar usuarios
+      description: Estructura para validar datos personales en checkton pld
       properties:
-        user:
+        nombre:
           type: string
+          x-stoplight:
+            id: cmh7pv6rstqw2
+          minLength: 1
+          maxLength: 100
+        primerApellido:
+          type: string
+          x-stoplight:
+            id: 3gqw0gpaee1h1
+          minLength: 1
+          maxLength: 100
+        segundoApellido:
+          type: string
+          x-stoplight:
+            id: ta3bh1ass3ns6
+          minLength: 1
+          maxLength: 100
+        fechaNacimiento:
+          type: string
+          x-stoplight:
+            id: ap2nj6amogy3q
+          minLength: 10
+          format: date
+          maxLength: 10
+        genero:
+          $ref: '#/components/schemas/GeneroEnum'
+        estado:
+          type: string
+          x-stoplight:
+            id: gsr24n102oa0m
+          minLength: 1
+          maxLength: 100
+        nombreServicioCliente:
+          type: string
+          x-stoplight:
+            id: gsr24n102oa0m
           minLength: 1
           maxLength: 100
       required:
-        - user
-    UserUpdateRequest:
-      title: UserUpdateRequest
+        - nombre
+        - primerApellido
+        - segundoApellido
+        - fechaNacimiento
+        - genero
+        - estado
+        - nombreServicioCliente
+    ValidacionCurpResult:
+      title: ValidacionCurpResult
       x-stoplight:
-        id: s7nqtlsw9m3sh
+        id: yogip2dhjitkj
       type: object
+      description: Estructura del resultado de la validacion de datos personales en checkton pld
       properties:
-        user:
+        validationId:
           type: string
+          x-stoplight:
+            id: cmh7pv6rstqw2
           minLength: 1
           maxLength: 100
-        modificationTimestamp:
+        curpGenerada:
           type: string
-          format: date-time
+          x-stoplight:
+            id: cmh7pv6rstqw2
+          minLength: 18
+          maxLength: 18
+        success:
+          type: boolean
+          x-stoplight:
+            id: 3gqw0gpaee1h1
       required:
-        - user
-        - modificationTimestamp
-      description: Estructura para actualizar usuarios
-    UserResult:
-      title: UserResult
+        - validationId
+        - curpGenerada
+        - success
+    GeneroEnum:
+      title: GeneroEnum
       x-stoplight:
-        id: gu55vk4o2l8gt
-      type: object
-      description: Estructura para consultar usuarios
-      properties:
-        user:
-          type: string
-          minLength: 1
-          maxLength: 100
-        guid:
-          type: string
-          description: Guid of the key-value configuration
-          format: uuid
-        creationTimestamp:
-          type: string
-          format: date-time
-          description: Creation timestamp
-        modificationTimestamp:
-          type: string
-          description: Modification timestamp
-          format: date-time
-        creationUser:
-          type: string
-          format: uuid
-          description: Guid of the creation user
-        modificationUser:
-          type: string
-          format: uuid
-          description: Guid of the modification user
-      required:
-        - user
-        - guid
-        - creationTimestamp
-        - modificationTimestamp
-        - creationUser
-        - modificationUser
+        id: mayl2eqw4lv1l
+      type: string
+      description: Estructura enum para genero
+      enum:
+        - Masculino
+        - Femenino
+        - NoBinario
   securitySchemes:
     jwsToken:
       type: http
@@ -225,7 +180,7 @@ components:
       description: Version of the API to use
   responses:
     HTTP_Error_400:
-      description: Response to client error satus code
+      description: Response to client error status code
       content:
         application/json:
           schema:
@@ -316,8 +271,8 @@ components:
                       serviceName: string
                       serviceLocation: string
 tags:
+  - name: checktonPld
   - name: Health
-  - name: Users
 security:
   - jwsToken: []
   - X-API-Key: []

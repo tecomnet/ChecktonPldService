@@ -41,9 +41,12 @@ namespace ChecktonPld.UnitTest.FixtureBase
             Environment.SetEnvironmentVariable(
                 "dbConnectionString",
                 _connectionString);
-
-            
-     
+            Environment.SetEnvironmentVariable(
+                "api-key-checkton",
+                "ak_9b4a4e4ba8ea5aa18bfca2f983c7ce147f744bfb6e5ee8202f0c9567f7a0ed0c");
+            Environment.SetEnvironmentVariable(
+                "checkton-pld-base-uri",
+                "https://api-pld.checkton.com.mx");
         }
     }
 }

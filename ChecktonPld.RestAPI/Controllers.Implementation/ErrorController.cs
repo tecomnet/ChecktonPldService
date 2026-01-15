@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ChecktonPld.DOM.Errors;
-using ChecktonPld.RestAPI.Models;
-using InlineResponse400 = ChecktonPld.RestAPI.Models.InlineResponse400;
 using Models_InlineResponse400 = ChecktonPld.RestAPI.Models.InlineResponse400;
 
 namespace ChecktonPld.RestAPI.Controllers.Implementation

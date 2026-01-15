@@ -1,3 +1,4 @@
+using ChecktonPld.DOM.Modelos;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChecktonPld.DOM.ApplicationDbContext;
@@ -9,6 +10,6 @@ public class ServiceDbContext : DbContext
     {
     }
     
-    //public DbSet<Cliente> Cliente { get; set; }   
+    public DbSet<ValidacionCurp> ValidacionCurp { get; set; }   
     
 }

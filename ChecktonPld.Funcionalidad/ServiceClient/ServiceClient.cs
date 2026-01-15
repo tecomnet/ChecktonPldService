@@ -83,6 +83,25 @@ namespace ChecktonPld.Funcionalidad.ServiceClient
 
 		}
 		/// <summary>
+		/// Factory for API Key para checkton pld api
+		/// </summary>
+		/// <param name="baseUrl">Base URL for the service</param>
+		/// <param name="apiKey">API key for private mock servers</param>
+		/// <returns>Instance of the client service facade</returns>
+		public static ServiceClient<T> CreateApiKeyServiceClientFacade(
+			string baseUrl,
+			string apiKey)
+		{
+			// Create an instance of the class
+			ServiceClient<T> clientFacade = new(baseUrl: baseUrl);
+			// Add the API key
+			clientFacade.HttpClient.DefaultRequestHeaders.Add(
+				name: "X-API-Key",
+				value: apiKey);
+			// Return the instance
+			return clientFacade;
+		}
+		/// <summary>
 		/// Factory for API Key
 		/// </summary>
 		/// <param name="baseUrl">Base URL for the service</param>
